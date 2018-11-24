@@ -30,8 +30,14 @@ window.onload = function () {
         //TODO: improve this with an algorithm that take into account, size of the sphere, distance of the camera, displacement, etc.
         //Rotate globe
         if(InputState.isDragging) {
-            globe.rotation.y += InputState.displacement.x/100;
-            globe.rotation.x += InputState.displacement.y/100;
+            var displacement = InputState.displacement.get();
+            globe.rotation.y += displacement.x/100 * (1/globe.scale.x);
+            globe.rotation.x += displacement.y/100 * (1/globe.scale.y);
+        }
+
+        if(InputState.isScrolling) {
+            var scroll = InputState.scrolling.get();
+            globe.scale.addScalar(-scroll.y / 1000);
         }
     };
 

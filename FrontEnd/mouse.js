@@ -4,24 +4,56 @@ var InputState = {
         y: 0
     },
     displacement: {
+        get: () => {
+            response = {
+                x: InputState.displacement.x,
+                y: InputState.displacement.y
+            }
+
+            InputState.displacement.x = 0;
+            InputState.displacement.y = 0;
+
+            return response;
+        },
+
+        x: 0,
+        y: 0,
+    },
+    scrolling: {
+        get: () => {
+            response = {
+                x: InputState.scrolling.x,
+                y: InputState.scrolling.y
+            }
+
+            InputState.scrolling.x = 0;
+            InputState.scrolling.y = 0;
+
+            InputState.isScrolling = false;
+
+            return response;
+        },
+        
         x: 0,
         y: 0
     },
+
     isClicking: false,
     isDragging: false,
+    isScrolling: false,
 
     onClick: new Event("onClick"),
     onDrag: new Event("onDrag"),
     onDragFinish: new Event("onDragFinish")
 };
 
-window.addEventListener("mousedown", function(e) {
+window.addEventListener("mousedown", function (e) {
     e.preventDefault();
 
     InputState.isClicking = true;
 });
 
-window.addEventListener("mousemove", function(e) {
+window.addEventListener("mousemove", function (e) {
     e.preventDefault();
 
     //Get position of mouse
@@ -39,7 +71,7 @@ window.addEventListener("mousemove", function(e) {
     }
 });
 
-window.addEventListener("mouseup", function(e) {
+window.addEventListener("mouseup", function (e) {
     e.preventDefault();
 
     //Drag ended
@@ -53,4 +85,12 @@ window.addEventListener("mouseup", function(e) {
 
     InputState.isDragging = false;
     InputState.isClicking = false;
+});
+
+window.addEventListener('wheel', function (e) {
+    e.preventDefault();
+
+    InputState.scrolling.x += e.deltaX;
+    InputState.scrolling.y += e.deltaY;
+    InputState.isScrolling = true;
 });

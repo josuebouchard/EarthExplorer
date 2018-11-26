@@ -1,4 +1,11 @@
-var camera, sphere;
+var camera, globe;
+var graticule, mesh;
+
+var cameraRadius = 5;
+const center = new THREE.Vector3(0,0,0);
+
+var displacementCamera = Math.PI / 2;
+
 window.onload = function () {
     var scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, .1, 100);
@@ -8,34 +15,25 @@ window.onload = function () {
     renderer.setSize(innerWidth, innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // var geometry = new THREE.SphereGeometry(1, 64, 64);
-    // var texture = new THREE.TextureLoader().load('earth.jpg');
-    // var depthMap = new THREE.TextureLoader().load("high-bump.jpg");
-    // var material = new THREE.MeshStandardMaterial({
-    //     map: texture,
-    //     // displacementMap: depthMap,
-    //     // displacementScale: .08
-    // });
-    // sphere = new THREE.Mesh(geometry, material);
-    // scene.add(sphere);
+    var geometry = new THREE.SphereGeometry(1, 64, 64);
+    var texture = new THREE.TextureLoader().load('earth.jpg');
+    var depthMap = new THREE.TextureLoader().load("high-bump.jpg");
+    var material = new THREE.MeshStandardMaterial({
+        map: texture,
+        // displacementMap: depthMap,
+        // displacementScale: .08
+    });
+    globe = new THREE.Mesh(geometry, material);
+    scene.add(globe);
 
-    // var light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
-    // light.intensity = 2;
-    // scene.add( light );
+    var light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+    light.intensity = 2;
+    scene.add( light );
 
     var radius = 1;
 
-    var graticule, mesh;
-
-      scene.add(
-        (graticule = wireframe(
-          graticule10(),
-          new THREE.LineBasicMaterial({
-            color: 0xaaaaaa
-          })
-        ))
-      );
-      scene.add((mesh = wireframe(topojson.mesh(topology, topology.objects.countries),new THREE.LineBasicMaterial({color: 0xff0000}))));
+    scene.add((graticule = wireframe(graticule10(),new THREE.LineBasicMaterial({color: 0xaaaaaa}))));
+    scene.add((mesh = wireframe(topojson.mesh(topology, topology.objects.countries),new THREE.LineBasicMaterial({color: 0xff0000}))));
 
     // Converts a point [longitude, latitude] in degrees to a THREE.Vector3.
     function vertex(point) {
@@ -111,25 +109,12 @@ window.onload = function () {
         };
     }
 
+    var defaultRotation = new THREE.Vector3(-1.5700000000000005, 0, -3.8163916471489756e-17);
 
+    graticule.rotation.setFromVector3(defaultRotation);
+    mesh.rotation.setFromVector3(defaultRotation);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    camera.position.z = 5;
+    camera.position.z = cameraRadius;
 
     //Draw Scene
     var Logic = function () {
@@ -137,15 +122,27 @@ window.onload = function () {
         //Rotate globe
         if(InputState.isDragging) {
             var displacement = InputState.displacement.get();
-            graticule.rotation.z = mesh.rotation.z += displacement.x / 100 * (1 / graticule.scale.x);
-            graticule.rotation.x = mesh.rotation.x += displacement.y / 100 * (1 / graticule.scale.y);
+            
+            displacementCamera += displacement.x / 500;
+
         }
 
         if(InputState.isScrolling) {
             var scroll = InputState.scrolling.get();
-            sphere.scale.addScalar(-scroll.y / 1000);
-            sphere.scale.setScalar(clamp(sphere.scale.x, 0.5, 2.5));
+            cameraRadius += scroll.y/1000;
         }
+
+
+        camera.position.x = cameraRadius * Math.cos(displacementCamera);
+        camera.position.z = cameraRadius * Math.sin(displacementCamera);
+
+        //Camera:
+        //X axis: Cabeceo
+        //Y axis: Guiño
+        camera.rotation.y = Math.PI/2 - displacementCamera;
+
+
+        
     };
 
     //Run loop (logic, render, repeat)

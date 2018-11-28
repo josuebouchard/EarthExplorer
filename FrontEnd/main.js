@@ -2,9 +2,13 @@ var camera, globe;
 var graticule, mesh;
 
 var cameraRadius = 5;
-const center = new THREE.Vector3(0,0,0);
+const defaultRotation = new THREE.Vector3(
+  -1.5700000000000005,
+  0,
+  -3.8163916471489756e-17
+);
 
-var displacementCamera = Math.PI / 2;
+var displacementCamera = {x: 0, y: 0};
 
 window.onload = function () {
     var scene = new THREE.Scene();
@@ -109,7 +113,7 @@ window.onload = function () {
         };
     }
 
-    var defaultRotation = new THREE.Vector3(-1.5700000000000005, 0, -3.8163916471489756e-17);
+    
 
     graticule.rotation.setFromVector3(defaultRotation);
     mesh.rotation.setFromVector3(defaultRotation);
@@ -118,12 +122,12 @@ window.onload = function () {
 
     //Draw Scene
     var Logic = function () {
-        //TODO: improve this with an algorithm that take into account, size of the sphere, distance of the camera, displacement, etc.
-        //Rotate globe
+        
         if(InputState.isDragging) {
             var displacement = InputState.displacement.get();
             
-            displacementCamera += displacement.x / 500;
+            displacementCamera.x += displacement.x / 500;
+            displacementCamera.y -= displacement.y / 500;
 
         }
 
@@ -133,15 +137,18 @@ window.onload = function () {
         }
 
 
-        camera.position.x = cameraRadius * Math.cos(displacementCamera);
-        camera.position.z = cameraRadius * Math.sin(displacementCamera);
 
-        //Camera:
-        //X axis: Cabeceo
-        //Y axis: Guiño
-        camera.rotation.y = Math.PI/2 - displacementCamera;
+        //Putting limits
+        displacementCamera.y = clamp(displacementCamera.y, 0.000001, Math.PI);
+        cameraRadius = clamp(cameraRadius, 1.2, 4)
 
+        //Vectors should be (X, Z, Y)
+        camera.position.x = cameraRadius * Math.cos(displacementCamera.x) * Math.sin(displacementCamera.y);
+        camera.position.z = cameraRadius * Math.sin(displacementCamera.x) * Math.sin(displacementCamera.y);
+        camera.position.y = cameraRadius * Math.cos(displacementCamera.y);
 
+        //Make the camera always look at the center
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
         
     };
 

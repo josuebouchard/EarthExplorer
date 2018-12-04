@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "allowJs": true,
+        "module": "amd",
+        "lib": ["es2015", "es2015.iterable", "dom"],
+        "outDir": "FrontEnd/js/CustomFiles",
+        "watch": true
+    },
+    "include": [
+        "Src/*",
+    ]
+}

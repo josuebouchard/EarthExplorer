@@ -1,0 +1,27 @@
+{
+    "files.exclude": {
+        //Files not meant to (in normal cases) be modified by hand
+        "package.json": false,
+        "package-lock.json": true,
+        "node_modules": true,
+        ".gitignore": true,
+
+        //Server code
+        "index.js": false,
+
+        //Front end folder
+        "FrontEnd": false,
+        "FrontEnd/TopoJsonFiles": true,
+        "FrontEnd/50M": true,
+
+        //Static files
+        "*/*.jpg": false,
+        "*/*.css": false,
+        "*/*.html": false,
+        "*/*.png": false,
+
+        //Typescript
+        "Src": false,
+        "tsconfig.json": false
+    }
+}

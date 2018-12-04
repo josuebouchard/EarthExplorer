@@ -4,11 +4,23 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "author": "Josue Bouchard",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "@types/d3": "^5.0.1",
+    "@types/jquery": "^3.3.22",
+    "@types/topojson": "^3.2.1",
+    "body-parser": "^1.18.3",
+    "canvas": "^2.2.0",
+    "express": "^4.16.4",
+    "projections": "^1.0.0",
+    "request": "^2.88.0",
+    "topojson-client": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.93.10"
   }
 }

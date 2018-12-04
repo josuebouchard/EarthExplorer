@@ -5,16 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Earth Explorer</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.min.css"/>
-
-    <script src="Libs/three.min.js"></script>
-    <script src="helpers.js"></script>
-    <script async src="input.js"></script>
-    <script src="main.js"></script>
-    <script src="https://unpkg.com/d3-array@1"></script>
-    <script src="https://unpkg.com/topojson-client@3"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css"/>
 </head>
 <body>
+    <script src="js/require.js" data-main="js/config.js"></script>
+    <script>
+        require(["config"], function(){
+            //After everything is loaded
+            require(['main']);
+        });
+    </script>
 
 </body>
 </html>

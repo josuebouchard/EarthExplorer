@@ -67,7 +67,6 @@ define(["require", "exports", "helpers", "three", "input"], function (require, e
     }
     function click() {
         //Normalize screen cursor position
-        console.log("hola");
         var mouse = new THREE.Vector2();
         mouse.x = (input_1.InputState.position.x / window.innerWidth) * 2 - 1;
         mouse.y = -(input_1.InputState.position.y / window.innerHeight) * 2 + 1;
@@ -75,6 +74,7 @@ define(["require", "exports", "helpers", "three", "input"], function (require, e
         raycaster.setFromCamera(mouse, camera);
         //Raycast globe
         var intersects = raycaster.intersectObject(globe);
+        console.log(intersects[0].point);
         let coords = helpers_1.pointToLongLat(intersects[0].point, radius);
         console.log(coords);
         //DEBUG

@@ -65,7 +65,7 @@ window.addEventListener("mousemove", function(e) {
   InputState.displacement.y = e.movementY;
 
   //Is currently dragging
-  if (InputState.isClicking && (InputState.displacement.x != 0 || InputState.displacement.y !=0)) {
+  if (InputState.isClicking && (InputState.displacement.x != 0 || InputState.displacement.y != 0)) {
     InputState.isDragging = true;
     document.dispatchEvent(InputState.onDrag);
   }
@@ -81,7 +81,6 @@ window.addEventListener("mouseup", function(e) {
   //Click ended
   else {
     document.dispatchEvent(InputState.onClick);
-    console.log("hola");
   }
 
   InputState.isDragging = false;

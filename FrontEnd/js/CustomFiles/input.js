@@ -67,7 +67,6 @@ define(["require", "exports"], function (require, exports) {
         //Click ended
         else {
             document.dispatchEvent(exports.InputState.onClick);
-            console.log("hola");
         }
         exports.InputState.isDragging = false;
         exports.InputState.isClicking = false;

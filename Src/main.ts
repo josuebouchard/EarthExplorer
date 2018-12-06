@@ -1,6 +1,5 @@
-import { clamp, wireframe, pointToLongLat, getPlace } from "helpers";
+import { clamp, pointToLongLat, getPlace } from "helpers";
 import * as THREE from "three";
-import * as topojson from "topojson-client"
 import { InputState } from "input";
 
 let raycaster = new THREE.Raycaster();
@@ -91,7 +90,6 @@ function onWindowResize() {
 
 function click() {
     //Normalize screen cursor position
-    console.log("hola");
     var mouse = new THREE.Vector2();
     mouse.x = (InputState.position.x / window.innerWidth) * 2 - 1;
     mouse.y = -(InputState.position.y / window.innerHeight) * 2 + 1;
@@ -102,11 +100,15 @@ function click() {
     //Raycast globe
     var intersects = raycaster.intersectObject(globe);
 
+    console.log(intersects[0].point);
+
     let coords = pointToLongLat(intersects[0].point, radius);
     console.log(coords);
 
     //DEBUG
     //console.log(`https://www.google.com/maps/@${coords.latitude},${coords.longitude},6.17z`);
+
+
 
     $.post("/API/getPlace", coords, function (data) {
         console.log(data);

@@ -10,6 +10,7 @@
   "author": "Josue Bouchard",
   "license": "ISC",
   "dependencies": {
+    "@types/babylonjs": "^2.4.1",
     "@types/d3": "^5.0.1",
     "@types/jquery": "^3.3.22",
     "@types/topojson": "^3.2.1",
